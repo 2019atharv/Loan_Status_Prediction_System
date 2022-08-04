@@ -11,23 +11,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <style>
     
-/* header::before{
+header::before{
     content: "";
     background: url({{ url_for('static',filename="img/loan_3.jpg") }}) no-repeat center center/cover;
     /* background-image: url({{url_for('static',filename='/img/loan_3.jpg')}}) no-repeat center center/cover; */
-    /* position: absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height: 100%;
-    z-index: -1; */
-    /* opacity: 0.2; */
-    
-    /* } */ 
-    header::before{
-    content: "";
-    background: url({{ url_for('static',filename="img/loan_3.jpg") }}) no-repeat center center/cover;
-    /* background: url('/img/loan_3.jpg') no-repeat center center/cover; */
     position: absolute;
     top:0;
     left:0;
@@ -36,7 +23,7 @@
     z-index: -1;
     /* opacity: 0.2; */
     
-}
+    }
 #Gender{   
     padding: 5px 52px;   
 }
@@ -249,15 +236,19 @@
     </header>
     <div class="container">
         <h1>Get the Status of your Loan</h1>
-        <h4>{{age_text}}</h4>
-        <h4>{{prediction_text}}</h4>
-        <form action='/predict' method="POST">
+        <h2>{{prediction_text}}</h2>
+        <h3>{{age_text}}</h3>
+        <form action="/predict" method="POST">
             <!-- <div class="form-group">
                 <input type="text" placeholder="Enter your Gender">
             </div> -->
+            <!-- <div class="form-group">
+                <input type="date" id="Date" name="Enter Your Date Of Birth" placeholder="Enter Your Date Of Birth">
+            </div> -->
             <div class="form-group">
-                <input type="number" placeholder="Enter your age" id="Date" name="Enter Your Date Of Birth" >
+                <input type="number" placeholder="Enter your age" id="Age" name="Enter Your Date Of Birth" >
             </div>
+
             <div class="form-group">
                 <select name = "Gender" id="Gender">
                     <option value="" disabled selected hidden>Enter Your Gender</option>
@@ -317,17 +308,23 @@
                 <input type="text" placeholder="Enter Loan Amount" name="loanAmt">
             </div>
             <div class="form-group">
-                <!-- <input type="text" placeholder="Enter Loan Amount Term (in years)" name="Term"> -->
-                <select name = "Term" id="">
-                    <option value="" disabled selected hidden>Enter Loan Amount Term (in years)</option>
+                <!-- <input type="text" placeholder="Enter Loan Amount Term" name="Term"> -->
+               
+                <select name = "Term" id="Term">
+                    <option value="" disabled selected hidden>Enter  Loan  Amount Term </option>
                     <option value = 180 >Half year</option>
                     <option value = 360>One year</option>
                     <option value = 480>Two years</option>
-
+                    
                 </select>
             </div>
             <div class="form-group">
-                <input type="text" placeholder="Enter your Credit History" name="History">
+                <!-- <input type="text" placeholder="Enter your Credit History" name="History"> -->
+                <select name = "History" id="">
+                    <option value="" disabled selected hidden>Enter Your Credit History</option>
+                    <option value = 1>All previous debts cleared</option>
+                    <option value = 0>Previous debts pending </option>
+                </select>
             </div>
             <!-- <div class="form-group">
                 <input type="text" placeholder="Enter your Property Area">
@@ -337,7 +334,7 @@
                     <option value="" disabled selected hidden>Enter Your Property Area</option>
                     <option value = 2 >Urban</option>
                     <option value = 1>Semi-Urban</option>
-                    <option value = 0>rural</option>
+                    <option value = 0>Rural</option>
                 </select>
             </div>
             <input type="submit" class="btn" value="Get Status" ></button>

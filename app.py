@@ -2,6 +2,8 @@
 import numpy as np
 from flask import Flask, jsonify, render_template,request
 import pickle
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 
 app = Flask(__name__)
@@ -28,6 +30,27 @@ def predict():
     prediction = model.predict(final)
     output= prediction
 
+    # int_features = final.reshape(1,-1)
+
+    #Standarize the input data
+    # scaler = StandardScaler()
+    # scaler.fit(final)
+    # std_data = scaler.transform(final)
+    # print(std_data)
+
+    # prediction = model.predict(std_data)
+    # print(prediction)
+    if age<18:
+        return render_template('index.html',age_text='Age is less than 18')
+    if age>60:
+        return render_template('index.html',age_text='Age is greater than 60')
+
+
+    if (output[0] == 0):
+        print("Loan is Not Approved")
+    else:
+        print("Loan is Approved")
+
     # gender = request.form.values['Gender']
     # marital = request.form.values['Marital']
     # dependents = request.form.values['Dependents']
@@ -43,18 +66,14 @@ def predict():
     # prediction = model.predict(arr)
     # pred = model.predict(arr)
     # output = prediction[0]
-    print(output[0])
-    if age<18:
-        return render_template('index.html',age_text='Age is less than 18')
-    if age>60:
-        return render_template('index.html',age_text='Age is greater than 60')
+    # print(output[0])
     
-    if output[0] == 0:
-        print('Loan not approved')
-        return render_template('index.html',prediction_text='Loan is not approved')
+    if prediction[0] == 1:
+        print('Loan Approved')
+        return render_template('index.html',prediction_text='Loan is Approved')
     else:
-        print("loan approved")
-        return render_template('index.html',prediction_text='Loan is approved')
+        print("loan not Approved")
+        return render_template('index.html',prediction_text='Loan is not Approved')
 
     # print(arr)
 

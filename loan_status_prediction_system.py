@@ -12,6 +12,7 @@ Importing Dependencies
 import pandas as pd
 import numpy as np 
 import seaborn as sns
+from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn import svm
@@ -122,13 +123,13 @@ classifier.fit(X_train.values,Y_train)
 X_train_prediction = classifier.predict(X_train)
 training_data_accuracy = accuracy_score(X_train_prediction,Y_train)
 
-print("Accuracy on Training Data : ",training_data_accuracy)
+# print("Accuracy on Training Data (SVM) : ",training_data_accuracy)
 
 # Accuracy score on test data
 X_test_prediction = classifier.predict(X_test)
 test_data_accuracy = accuracy_score(X_test_prediction,Y_test)
-
-print("Accuracy on Test Data : ",test_data_accuracy)
+# print("Accuracy on Training Data (SVM) : ",training_data_accuracy)
+# print("Accuracy on Test Data (SVM) : ",test_data_accuracy)
 
 """Making a Predictive System"""
 
@@ -146,7 +147,7 @@ scaler.fit(X.values)
 std_data = scaler.transform(input_data_reshaped)
 print(std_data)
 
-# prediction = classifier.predict(std_data)
+# prediction = model.predict(std_data)
 # print(prediction)
 
 # if (prediction[0] == 0):
@@ -164,17 +165,66 @@ clf = DecisionTreeClassifier(criterion = 'entropy',random_state=0)
 
 clf.fit(X_train,Y_train)
 
-x_prediction_train = clf.predict(X_train)
-train_accuracy = accuracy_score(x_prediction_train,Y_train)
-print(train_accuracy)
+x_prediction_train_decision = clf.predict(X_train)
+train_accuracy = accuracy_score(x_prediction_train_decision,Y_train)
+# print("training data accuracy by decisiontree",train_accuracy)
 
-x_prediction_test = clf.predict(X_test)
-test_accuracy = accuracy_score(x_prediction_test,Y_test)
-print(test_accuracy)
+x_prediction_test_decision = clf.predict(X_test)
+test_accuracy = accuracy_score(x_prediction_test_decision,Y_test)
+
+# print("test data accuracy by decisiontree",test_accuracy)
 
 
-#saving model to disk
-pickle.dump(classifier,open('model.pkl','wb'))
+
+#Logistic Regression
+logid = LogisticRegression()
+logid.fit(X_train,Y_train)
+
+x_prediction_train_logistic = logid.predict(X_train)
+train_accuracy_logistic = accuracy_score(x_prediction_train_logistic,Y_train)
+# print("training data accuracy by logistic regression",train_accuracy_logistic)
+
+x_prediction_test_logistic = logid.predict(X_test)
+test_accuracy_logistic = accuracy_score(x_prediction_test_logistic,Y_test)
+
+# print("test data accuracy by logistic regression",test_accuracy_logistic)
+
+
+#Random Forest
+from sklearn.ensemble import RandomForestClassifier
+
+rf_classifier = RandomForestClassifier(random_state=0)
+rf_classifier.fit(X_train,Y_train)
+
+x_prediction_train_random = rf_classifier.predict(X_train)
+train_accuracy_random = accuracy_score(x_prediction_train_random,Y_train)
+# print("training data accuracy by random forest",train_accuracy_random)
+
+x_prediction_test_random = rf_classifier.predict(X_test)
+test_accuracy_random = accuracy_score(x_prediction_test_random,Y_test)
+
+# print("test data accuracy by random forest",test_accuracy_random)
+
+
+
+
+
+
+
+
+
+#Accuracy
+print("Accuracy on Training Data (SVM) : ",training_data_accuracy)
+print("Accuracy on Test Data (SVM) : ",test_data_accuracy)
+print("Training data accuracy by decisiontree",train_accuracy)
+print("Test data accuracy by decisiontree",test_accuracy)
+print("Training data accuracy by random forest",train_accuracy_random)
+print("Test data accuracy by random forest",test_accuracy_random)
+print("training data accuracy by logistic regression",train_accuracy_logistic)
+print("test data accuracy by logistic regression",test_accuracy_logistic)
+
+
+pickle.dump(logid,open('model.pkl','wb'))
 
 #loading the model 
 model = pickle.load(open('model.pkl','rb'))
